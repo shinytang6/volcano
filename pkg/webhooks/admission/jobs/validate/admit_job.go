@@ -112,7 +112,7 @@ func validateJobCreate(job *v1alpha1.Job, reviewResponse *v1beta1.AdmissionRespo
 
 	if job.Spec.MinAvailable < 0 {
 		reviewResponse.Allowed = false
-		return fmt.Sprintf("'minAvailable' must be >= 0.")
+		return fmt.Sprintf("Job's 'minAvailable' must be >= 0.")
 	}
 
 	if job.Spec.MaxRetry < 0 {
@@ -133,6 +133,14 @@ func validateJobCreate(job *v1alpha1.Job, reviewResponse *v1beta1.AdmissionRespo
 	for index, task := range job.Spec.Tasks {
 		if task.Replicas < 0 {
 			msg += fmt.Sprintf(" 'replicas' < 0 in task: %s;", task.Name)
+		}
+
+		if task.MinAvailable < 0 {
+			msg += fmt.Sprintf(" 'minAvailable' < 0 in task: %s;", task.Name)
+		}
+
+		if task.Replicas < task.MinAvailable {
+			msg += fmt.Sprintf(" 'minAvailable' should not be greater than replicas in task %s;", task.Name)
 		}
 
 		// count replicas
@@ -201,6 +209,14 @@ func validateJobUpdate(old, new *v1alpha1.Job) error {
 	for _, task := range new.Spec.Tasks {
 		if task.Replicas < 0 {
 			return fmt.Errorf("'replicas' must be >= 0 in task: %s", task.Name)
+		}
+
+		if task.MinAvailable < 0 {
+			return fmt.Errorf("'minAvailable' must be >= 0 in task: %s", task.Name)
+		}
+
+		if task.Replicas < task.MinAvailable {
+			return fmt.Errorf("'minAvailable' should not be greater than replicas in task %s;", task.Name)
 		}
 		// count replicas
 		totalReplicas += task.Replicas

@@ -570,6 +570,15 @@ func (cc *jobcontroller) calcPGMinResources(job *batch.Job) *v1.ResourceList {
 	return &minAvailableTasksRes
 }
 
+func (cc *jobcontroller) calcPGMinAvailable(job *batch.Job) int32 {
+	var pgMinAvailable int32
+	for _, task := range job.Spec.Tasks {
+		pgMinAvailable += task.MinAvailable
+	}
+
+	return pgMinAvailable
+}
+
 func (cc *jobcontroller) initJobStatus(job *batch.Job) (*batch.Job, error) {
 	if job.Status.State.Phase != "" {
 		return job, nil
