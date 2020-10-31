@@ -31,6 +31,7 @@ import (
 	_ "volcano.sh/volcano/pkg/controllers/job"
 	_ "volcano.sh/volcano/pkg/controllers/podgroup"
 	_ "volcano.sh/volcano/pkg/controllers/queue"
+	_ "volcano.sh/volcano/pkg/apis/batch"
 
 	"volcano.sh/volcano/cmd/controller-manager/app"
 	"volcano.sh/volcano/cmd/controller-manager/app/options"

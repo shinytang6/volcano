@@ -54,6 +54,7 @@ import (
 )
 
 func init() {
+	klog.Infof("Register JobController = =")
 	framework.RegisterController(&jobcontroller{})
 }
 

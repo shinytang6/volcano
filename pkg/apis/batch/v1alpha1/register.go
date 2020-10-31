@@ -20,6 +20,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+
+	"k8s.io/klog"
 )
 
 var (
@@ -52,5 +54,6 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 }
 
 func init() {
+	klog.V(4).Infof("batch job init!!!")
 	SchemeBuilder.Register(addKnownTypes, RegisterDefaults)
 }

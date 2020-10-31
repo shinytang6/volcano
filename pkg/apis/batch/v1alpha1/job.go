@@ -24,6 +24,7 @@ import (
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +k8s:defaulter-gen=true
 // +kubebuilder:object:root=true
 // +kubebuilder:resource:path=jobs,shortName=vcjob;vj
 // +kubebuilder:subresource:status
@@ -279,6 +280,7 @@ type JobStatus struct {
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +k8s:defaulter-gen=true
 // +kubebuilder:object:root=true
 
 // JobList defines the list of jobs.
