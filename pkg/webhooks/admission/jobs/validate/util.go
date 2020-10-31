@@ -185,3 +185,7 @@ func validateIO(volumes []batchv1alpha1.VolumeSpec) error {
 	}
 	return nil
 }
+
+func getInt32Ptr(i int32) *int32 {
+	return &i
+}

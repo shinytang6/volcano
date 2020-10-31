@@ -50,3 +50,7 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
 	return nil
 }
+
+func init() {
+	SchemeBuilder.Register(addKnownTypes, RegisterDefaults)
+}

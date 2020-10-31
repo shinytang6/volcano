@@ -589,7 +589,7 @@ func TestPendingState_Execute(t *testing.T) {
 						Namespace: namespace,
 					},
 					Spec: v1alpha1.JobSpec{
-						MinAvailable: 3,
+						MinAvailable: getInt32Ptr(3),
 					},
 					Status: v1alpha1.JobStatus{
 						Running: 3,
@@ -620,7 +620,7 @@ func TestPendingState_Execute(t *testing.T) {
 						Namespace: namespace,
 					},
 					Spec: v1alpha1.JobSpec{
-						MinAvailable: 3,
+						MinAvailable: getInt32Ptr(3),
 					},
 					Status: v1alpha1.JobStatus{
 						Running: 2,
@@ -650,7 +650,7 @@ func TestPendingState_Execute(t *testing.T) {
 						Namespace: namespace,
 					},
 					Spec: v1alpha1.JobSpec{
-						MinAvailable: 3,
+						MinAvailable: getInt32Ptr(3),
 					},
 					Status: v1alpha1.JobStatus{
 						Running: 2,
@@ -719,7 +719,7 @@ func TestPendingState_Execute(t *testing.T) {
 					t.Errorf("Expected Job phase to %s, but got %s in case %d", v1alpha1.Completing, jobInfo.Job.Status.State.Phase, i)
 				}
 			} else if testcase.Action == busv1alpha1.EnqueueAction {
-				if jobInfo.Job.Spec.MinAvailable <= jobInfo.Job.Status.Running+jobInfo.Job.Status.Succeeded+jobInfo.Job.Status.Failed {
+				if *jobInfo.Job.Spec.MinAvailable <= jobInfo.Job.Status.Running+jobInfo.Job.Status.Succeeded+jobInfo.Job.Status.Failed {
 					if jobInfo.Job.Status.State.Phase != v1alpha1.Running {
 						t.Errorf("Expected Job phase to %s, but got %s in case %d", v1alpha1.Running, jobInfo.Job.Status.State.Phase, i)
 					}
@@ -753,7 +753,7 @@ func TestRestartingState_Execute(t *testing.T) {
 						Namespace: namespace,
 					},
 					Spec: v1alpha1.JobSpec{
-						MaxRetry: 3,
+						MaxRetry: getInt32Ptr(3),
 					},
 					Status: v1alpha1.JobStatus{
 						RetryCount: 3,
@@ -777,15 +777,15 @@ func TestRestartingState_Execute(t *testing.T) {
 						Namespace: namespace,
 					},
 					Spec: v1alpha1.JobSpec{
-						MaxRetry: 3,
+						MaxRetry: getInt32Ptr(3),
 						Tasks: []v1alpha1.TaskSpec{
 							{
 								Name:     "task1",
-								Replicas: 1,
+								Replicas: getInt32Ptr(1),
 							},
 							{
 								Name:     "task2",
-								Replicas: 1,
+								Replicas: getInt32Ptr(1),
 							},
 						},
 					},
@@ -831,7 +831,7 @@ func TestRestartingState_Execute(t *testing.T) {
 				t.Error("Error while retrieving value from Cache")
 			}
 
-			if testcase.JobInfo.Job.Spec.MaxRetry <= testcase.JobInfo.Job.Status.RetryCount {
+			if *testcase.JobInfo.Job.Spec.MaxRetry <= testcase.JobInfo.Job.Status.RetryCount {
 				if jobInfo.Job.Status.State.Phase != v1alpha1.Failed {
 					t.Errorf("Expected Job phase to %s, but got %s in case %d", v1alpha1.Failed, jobInfo.Job.Status.State.Phase, i)
 				}
@@ -1067,7 +1067,7 @@ func TestRunningState_Execute(t *testing.T) {
 						Tasks: []v1alpha1.TaskSpec{
 							{
 								Name:     "task1",
-								Replicas: 2,
+								Replicas: getInt32Ptr(2),
 								Template: v1.PodTemplateSpec{
 									ObjectMeta: metav1.ObjectMeta{
 										Name: "task1",
@@ -1107,7 +1107,7 @@ func TestRunningState_Execute(t *testing.T) {
 						Tasks: []v1alpha1.TaskSpec{
 							{
 								Name:     "task1",
-								Replicas: 2,
+								Replicas: getInt32Ptr(2),
 								Template: v1.PodTemplateSpec{
 									ObjectMeta: metav1.ObjectMeta{
 										Name: "task1",

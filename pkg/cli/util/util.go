@@ -200,3 +200,7 @@ func HumanDuration(d time.Duration) string {
 	}
 	return fmt.Sprintf("%dy", hours/24/365)
 }
+
+func GetInt32Ptr(i int32) *int32 {
+	return &i
+}

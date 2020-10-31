@@ -266,7 +266,7 @@ func (cc *jobcontroller) syncJob(jobInfo *apis.JobInfo, updateStatus state.Updat
 			pods = map[string]*v1.Pod{}
 		}
 
-		for i := 0; i < int(ts.Replicas); i++ {
+		for i := 0; i < int(*ts.Replicas); i++ {
 			podName := fmt.Sprintf(jobhelpers.PodNameFmt, job.Name, name, i)
 			if pod, found := pods[podName]; !found {
 				newPod := createJobPod(job, tc, i)
@@ -358,7 +358,7 @@ func (cc *jobcontroller) syncJob(jobInfo *apis.JobInfo, updateStatus state.Updat
 		Terminating:         terminating,
 		Unknown:             unknown,
 		Version:             job.Status.Version,
-		MinAvailable:        job.Spec.MinAvailable,
+		MinAvailable:        *job.Spec.MinAvailable,
 		ControlledResources: job.Status.ControlledResources,
 		RetryCount:          job.Status.RetryCount,
 	}
@@ -490,7 +490,7 @@ func (cc *jobcontroller) createOrUpdatePodGroup(job *batch.Job) error {
 				},
 			},
 			Spec: scheduling.PodGroupSpec{
-				MinMember:         job.Spec.MinAvailable,
+				MinMember:         *job.Spec.MinAvailable,
 				Queue:             job.Spec.Queue,
 				MinResources:      cc.calcPGMinResources(job),
 				PriorityClassName: job.Spec.PriorityClassName,
@@ -507,8 +507,8 @@ func (cc *jobcontroller) createOrUpdatePodGroup(job *batch.Job) error {
 		return nil
 	}
 
-	if pg.Spec.MinMember != job.Spec.MinAvailable {
-		pg.Spec.MinMember = job.Spec.MinAvailable
+	if pg.Spec.MinMember != *job.Spec.MinAvailable {
+		pg.Spec.MinMember = *job.Spec.MinAvailable
 		pg.Spec.MinResources = cc.calcPGMinResources(job)
 		if _, err = cc.vcClient.SchedulingV1beta1().PodGroups(job.Namespace).Update(context.TODO(), pg, metav1.UpdateOptions{}); err != nil {
 			if !apierrors.IsAlreadyExists(err) {
@@ -556,8 +556,8 @@ func (cc *jobcontroller) calcPGMinResources(job *batch.Job) *v1.ResourceList {
 	minAvailableTasksRes := v1.ResourceList{}
 	podCnt := int32(0)
 	for _, task := range tasksPriority {
-		for i := int32(0); i < task.Replicas; i++ {
-			if podCnt >= job.Spec.MinAvailable {
+		for i := int32(0); i < *task.Replicas; i++ {
+			if podCnt >= *job.Spec.MinAvailable {
 				break
 			}
 			podCnt++
@@ -578,7 +578,7 @@ func (cc *jobcontroller) initJobStatus(job *batch.Job) (*batch.Job, error) {
 	job.Status.State.LastTransitionTime = metav1.Now()
 	job.Status.State.Phase = batch.Pending
 	job.Status.State.LastTransitionTime = metav1.Now()
-	job.Status.MinAvailable = job.Spec.MinAvailable
+	job.Status.MinAvailable = *job.Spec.MinAvailable
 	newJob, err := cc.vcClient.BatchV1alpha1().Jobs(job.Namespace).UpdateStatus(context.TODO(), job, metav1.UpdateOptions{})
 	if err != nil {
 		klog.Errorf("Failed to update status of Job %v/%v: %v",

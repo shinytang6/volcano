@@ -110,12 +110,12 @@ func validateJobCreate(job *v1alpha1.Job, reviewResponse *v1beta1.AdmissionRespo
 	taskNames := map[string]string{}
 	var totalReplicas int32
 
-	if job.Spec.MinAvailable < 0 {
+	if *job.Spec.MinAvailable < 0 {
 		reviewResponse.Allowed = false
 		return fmt.Sprintf("'minAvailable' must be >= 0.")
 	}
 
-	if job.Spec.MaxRetry < 0 {
+	if *job.Spec.MaxRetry < 0 {
 		reviewResponse.Allowed = false
 		return fmt.Sprintf("'maxRetry' cannot be less than zero.")
 	}
@@ -131,12 +131,12 @@ func validateJobCreate(job *v1alpha1.Job, reviewResponse *v1beta1.AdmissionRespo
 	}
 
 	for index, task := range job.Spec.Tasks {
-		if task.Replicas < 0 {
+		if *task.Replicas < 0 {
 			msg += fmt.Sprintf(" 'replicas' < 0 in task: %s;", task.Name)
 		}
 
 		// count replicas
-		totalReplicas += task.Replicas
+		totalReplicas += *task.Replicas
 
 		// validate task name
 		if errMsgs := validation.IsDNS1123Label(task.Name); len(errMsgs) > 0 {
@@ -159,7 +159,7 @@ func validateJobCreate(job *v1alpha1.Job, reviewResponse *v1beta1.AdmissionRespo
 		msg += validateTaskTemplate(task, job, index)
 	}
 
-	if totalReplicas < job.Spec.MinAvailable {
+	if totalReplicas < *job.Spec.MinAvailable {
 		msg += " 'minAvailable' should not be greater than total replicas in tasks;"
 	}
 
@@ -199,16 +199,16 @@ func validateJobCreate(job *v1alpha1.Job, reviewResponse *v1beta1.AdmissionRespo
 func validateJobUpdate(old, new *v1alpha1.Job) error {
 	var totalReplicas int32
 	for _, task := range new.Spec.Tasks {
-		if task.Replicas < 0 {
+		if *task.Replicas < 0 {
 			return fmt.Errorf("'replicas' must be >= 0 in task: %s", task.Name)
 		}
 		// count replicas
-		totalReplicas += task.Replicas
+		totalReplicas += *task.Replicas
 	}
-	if new.Spec.MinAvailable > totalReplicas {
+	if *new.Spec.MinAvailable > totalReplicas {
 		return fmt.Errorf("'minAvailable' must not be greater than total replicas")
 	}
-	if new.Spec.MinAvailable < 0 {
+	if *new.Spec.MinAvailable < 0 {
 		return fmt.Errorf("'minAvailable' must be >= 0")
 	}
 
@@ -216,9 +216,9 @@ func validateJobUpdate(old, new *v1alpha1.Job) error {
 		return fmt.Errorf("job updates may not add or remove tasks")
 	}
 	// other fields under spec are not allowed to mutate
-	new.Spec.MinAvailable = old.Spec.MinAvailable
+	*new.Spec.MinAvailable = *old.Spec.MinAvailable
 	for i := range new.Spec.Tasks {
-		new.Spec.Tasks[i].Replicas = old.Spec.Tasks[i].Replicas
+		*new.Spec.Tasks[i].Replicas = *old.Spec.Tasks[i].Replicas
 	}
 
 	// job controller will update the pvc name if not provided

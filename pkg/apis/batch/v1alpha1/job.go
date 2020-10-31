@@ -53,7 +53,7 @@ type JobSpec struct {
 
 	// The minimal available pods to run for this Job
 	// +optional
-	MinAvailable int32 `json:"minAvailable,omitempty" protobuf:"bytes,2,opt,name=minAvailable"`
+	MinAvailable *int32 `json:"minAvailable,omitempty" protobuf:"bytes,2,opt,name=minAvailable"`
 
 	// The volumes mount on Job
 	// +optional
@@ -83,7 +83,7 @@ type JobSpec struct {
 	// Specifies the maximum number of retries before marking this Job failed.
 	// Defaults to 3.
 	// +optional
-	MaxRetry int32 `json:"maxRetry,omitempty" protobuf:"bytes,8,opt,name=maxRetry"`
+	MaxRetry *int32 `json:"maxRetry,omitempty" protobuf:"bytes,8,opt,name=maxRetry"`
 
 	// ttlSecondsAfterFinished limits the lifetime of a Job that has finished
 	// execution (either Completed or Failed). If this field is set,
@@ -170,7 +170,7 @@ type TaskSpec struct {
 
 	// Replicas specifies the replicas of this TaskSpec in Job
 	// +optional
-	Replicas int32 `json:"replicas,omitempty" protobuf:"bytes,2,opt,name=replicas"`
+	Replicas *int32 `json:"replicas,omitempty" protobuf:"bytes,2,opt,name=replicas"`
 
 	// Specifies the pod that will be created for this TaskSpec
 	// when executing a Job

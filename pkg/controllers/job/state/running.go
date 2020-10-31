@@ -57,7 +57,7 @@ func (ps *runningState) Execute(action v1alpha1.Action) error {
 				return false
 			}
 			if status.Succeeded+status.Failed == jobReplicas {
-				if status.Succeeded >= ps.job.Job.Spec.MinAvailable {
+				if status.Succeeded >= *ps.job.Job.Spec.MinAvailable {
 					status.State.Phase = vcbatch.Completed
 				} else {
 					status.State.Phase = vcbatch.Failed

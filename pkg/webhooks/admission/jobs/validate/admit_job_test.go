@@ -52,12 +52,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -94,12 +94,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "duplicated-task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -116,7 +116,7 @@ func TestValidateJobCreate(t *testing.T) {
 						},
 						{
 							Name:     "duplicated-task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -147,12 +147,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -193,12 +193,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 2,
+					MinAvailable: getInt32Ptr(2),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -229,12 +229,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -268,12 +268,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -305,12 +305,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: -1,
+					MinAvailable: getInt32Ptr(-1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -341,13 +341,13 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
-					MaxRetry:     -1,
+					MinAvailable: getInt32Ptr(1),
+					MaxRetry:     getInt32Ptr(-1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -378,7 +378,7 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks:        []v1alpha1.TaskSpec{},
 				},
@@ -396,12 +396,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: -1,
+							Replicas: getInt32Ptr(-1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -432,12 +432,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "Task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -470,12 +470,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -513,12 +513,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -554,12 +554,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -596,12 +596,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -638,12 +638,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -682,12 +682,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -730,12 +730,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -776,12 +776,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -823,12 +823,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -874,12 +874,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -924,12 +924,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -970,12 +970,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "jobQueue",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -1005,12 +1005,12 @@ func TestValidateJobCreate(t *testing.T) {
 					Namespace: namespace,
 				},
 				Spec: v1alpha1.JobSpec{
-					MinAvailable: 1,
+					MinAvailable: getInt32Ptr(1),
 					Queue:        "default",
 					Tasks: []v1alpha1.TaskSpec{
 						{
 							Name:     "task-1",
-							Replicas: 1,
+							Replicas: getInt32Ptr(1),
 							Template: v1.PodTemplateSpec{
 								ObjectMeta: metav1.ObjectMeta{
 									Labels: map[string]string{"name": "test"},
@@ -1044,7 +1044,7 @@ func TestValidateJobCreate(t *testing.T) {
 					Name: "default",
 				},
 				Spec: schedulingv1beta2.QueueSpec{
-					Weight: 1,
+					Weight: getInt32Ptr(1),
 				},
 				Status: schedulingv1beta2.QueueStatus{
 					State: schedulingv1beta2.QueueStateOpen,
@@ -1163,13 +1163,13 @@ func TestValidateJobUpdate(t *testing.T) {
 			new.ResourceVersion = "502593"
 			new.Status.Succeeded = 2
 
-			new.Spec.MinAvailable = tc.minAvailable
-			new.Spec.Tasks[0].Replicas = tc.replicas
+			new.Spec.MinAvailable = &tc.minAvailable
+			new.Spec.Tasks[0].Replicas = &tc.replicas
 
 			if tc.addTask {
 				new.Spec.Tasks = append(new.Spec.Tasks, v1alpha1.TaskSpec{
 					Name:     "task-2",
-					Replicas: 5,
+					Replicas: getInt32Ptr(5),
 					Template: v1.PodTemplateSpec{
 						ObjectMeta: metav1.ObjectMeta{
 							Labels: map[string]string{"name": "test"},
@@ -1211,12 +1211,12 @@ func newJob() *v1alpha1.Job {
 			Namespace: "default",
 		},
 		Spec: v1alpha1.JobSpec{
-			MinAvailable: 5,
+			MinAvailable: getInt32Ptr(5),
 			Queue:        "default",
 			Tasks: []v1alpha1.TaskSpec{
 				{
 					Name:     "task-1",
-					Replicas: 5,
+					Replicas: getInt32Ptr(5),
 					Template: v1.PodTemplateSpec{
 						ObjectMeta: metav1.ObjectMeta{
 							Labels: map[string]string{"name": "test"},
