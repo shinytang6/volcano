@@ -23,6 +23,7 @@ import (
 	"encoding/pem"
 	"flag"
 	"fmt"
+	"strings"
 
 	"golang.org/x/crypto/ssh"
 	v1 "k8s.io/api/core/v1"
@@ -42,6 +43,7 @@ type sshPlugin struct {
 
 	// flag parse args
 	sshKeyFilePath string
+	sshUser        string
 }
 
 // New creates ssh plugin
@@ -50,6 +52,7 @@ func New(client pluginsinterface.PluginClientset, arguments []string) pluginsint
 		pluginArguments: arguments,
 		client:          client,
 		sshKeyFilePath:  SSHAbsolutePath,
+		sshUser:         SSHUser,
 	}
 
 	p.addFlags()
@@ -149,6 +152,18 @@ func (sp *sshPlugin) mountRsaKey(pod *v1.Pod, job *batch.Job) {
 		}
 
 		pod.Spec.Containers[i].VolumeMounts = append(c.VolumeMounts, vm)
+		klog.Infof("=====================Before container command: %+v", pod.Spec.Containers[i].Command)
+		for i, c := range pod.Spec.Containers[i].Command {
+			klog.Infof("=====Before Container command %v: %+v", i, c)
+		}
+		if sp.sshUser != SSHUser {
+			originCommand := strings.Join(pod.Spec.Containers[i].Command, " ")
+			pod.Spec.Containers[i].Command = []string{"/bin/sh", "-c", fmt.Sprintf("useradd -m -s /bin/bash %s;", sp.sshUser), originCommand}
+		}
+		klog.Infof("=====================After container command: %+v", pod.Spec.Containers[i].Command)
+		for i, c := range pod.Spec.Containers[i].Command {
+			klog.Infof("=====Before Container command %v: %+v", i, c)
+		}
 	}
 }
 
@@ -193,6 +208,7 @@ func (sp *sshPlugin) addFlags() {
 	flagSet := flag.NewFlagSet(sp.Name(), flag.ContinueOnError)
 	flagSet.StringVar(&sp.sshKeyFilePath, "ssh-key-file-path", sp.sshKeyFilePath, "The path used to store "+
 		"ssh private and public keys, it is `/root/.ssh` by default.")
+	flagSet.StringVar(&sp.sshUser, "ssh-user", sp.sshUser, "The default ssh user, it is root by default.")
 
 	if err := flagSet.Parse(sp.pluginArguments); err != nil {
 		klog.Errorf("plugin %s flagset parse failed, err: %v", sp.Name(), err)

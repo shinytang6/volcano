@@ -26,7 +26,7 @@ const (
 	// SSHAuthorizedKeys authkey
 	SSHAuthorizedKeys = "authorized_keys"
 
-	// SSHConfig  ssh conf
+	// SSHConfig ssh conf
 	SSHConfig = "config"
 
 	// SSHAbsolutePath ssh abs path
@@ -34,4 +34,7 @@ const (
 
 	// SSHRelativePath ssh rel path
 	SSHRelativePath = ".ssh"
+
+	// SSHUser ssh user
+	SSHUser = "root"
 )
