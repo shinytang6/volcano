@@ -67,12 +67,12 @@ func (sc *SchedulerCache) addTask(pi *schedulingapi.TaskInfo) error {
 		}
 
 		node := sc.Nodes[pi.NodeName]
-		if !isTerminated(pi.Status) {
-			if err := node.AddTask(pi); err != nil {
-				return err
-			}
-		} else {
+		if isTerminated(pi.Status) {
 			klog.V(4).Infof("Pod <%v/%v> is in status %s.", pi.Namespace, pi.Name, pi.Status.String())
+		}
+
+		if err := node.AddTask(pi); err != nil {
+			return err
 		}
 	}
 

@@ -304,6 +304,7 @@ func (ni *NodeInfo) AddTask(task *TaskInfo) error {
 
 	if ni.Node != nil {
 		switch ti.Status {
+		case Succeeded, Failed:
 		case Releasing:
 			if err := ni.allocateIdleResource(ti); err != nil {
 				return err
@@ -345,6 +346,7 @@ func (ni *NodeInfo) RemoveTask(ti *TaskInfo) error {
 
 	if ni.Node != nil {
 		switch task.Status {
+		case Succeeded, Failed:
 		case Releasing:
 			ni.Releasing.Sub(task.Resreq)
 			ni.Idle.Add(task.Resreq)
